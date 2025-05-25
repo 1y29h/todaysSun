@@ -1,37 +1,33 @@
-HELP.md
-.gradle
-build/
-!gradle/wrapper/gradle-wrapper.jar
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Gradle 빌드 디렉토리
+/build/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+# Gradle Wrapper 디렉토리
+.gradle/
+# gradle-wrapper.properties 파일은 프로젝트 설정이므로 추적하는 것이 일반적입니다.
+# 하지만, wrapper/dists 디렉토리 (다운로드된 Gradle 바이너리)는 제외해야 합니다.
+gradle/wrapper/dists/
 
-### IntelliJ IDEA ###
-.idea
-*.iws
+# IDE 관련 파일 (IntelliJ IDEA, VS Code 등)
+.idea/
 *.iml
 *.ipr
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-
-### VS Code ###
+*.iws
 .vscode/
+
+# 로컬 개발 환경 파일
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store # macOS 관련 파일
+Thumbs.db # Windows 관련 파일
+# 임베디드 데이터베이스 파일 (H2 등 - 파일 기반 DB를 사용할 경우)
+# 현재는 in-memory H2를 사용하는 것으로 보이지만, 혹시 모를 경우를 대비해 추가
+*.mv.db
+*.trace.db
+
+# 이클립스 관련 파일 (사용할 경우)
+.project
+.classpath
+.settings/
+.factorypath
