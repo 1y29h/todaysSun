@@ -1,0 +1,127 @@
+<!--기존-->
+
+<!--<!DOCTYPE HTML>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <meta charset="utf-8">-->
+<!--    <link href="{{bootstrapCssPath}}" rel="stylesheet">-->
+<!--    <style>-->
+<!--        .container {-->
+<!--            max-width: 560px;-->
+<!--        }-->
+<!--        .field-error {-->
+<!--            border-color: #dc3545;-->
+<!--            color: #dc3545;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+<!--<div class="container">-->
+<!--    <div class="py-5 text-center">-->
+<!--        <h2>{{pageTitle}}</h2>-->
+<!--    </div>-->
+
+<!--    <form action="{{contextPath}}{{formAction}}" method="post">-->
+<!--        {{#globalErrorMessage}}-->
+<!--            <div>-->
+<!--                <p class="field-error">{{globalErrorMessage}}</p>-->
+<!--            </div>-->
+<!--        {{/globalErrorMessage}}-->
+
+<!--        <div>-->
+<!--            <label for="loginId">{{labelLoginId}}</label>-->
+<!--            <input type="text" id="loginId" name="loginId" value="{{loginId}}"-->
+<!--                   class="form-control {{#hasLoginIdError}}field-error{{/hasLoginIdError}}">-->
+<!--            {{#loginIdError}}-->
+<!--                <div class="field-error">{{loginIdError}}</div>-->
+<!--            {{/loginIdError}}-->
+<!--        </div>-->
+
+<!--        <div>-->
+<!--            <label for="password">{{labelPassword}}</label>-->
+<!--            <input type="password" id="password" name="password"-->
+<!--                   class="form-control {{#hasPasswordError}}field-error{{/hasPasswordError}}">-->
+<!--            {{#passwordError}}-->
+<!--                <div class="field-error">{{passwordError}}</div>-->
+<!--            {{/passwordError}}-->
+<!--        </div>-->
+
+<!--        <hr class="my-4">-->
+
+<!--        <div class="row">-->
+<!--            <div class="col">-->
+<!--                <button class="w-100 btn btn-primary btn-lg" type="submit">{{buttonLogin}}</button>-->
+<!--            </div>-->
+<!--            <div class="col">-->
+<!--                <button class="w-100 btn btn-secondary btn-lg"-->
+<!--                        onclick="location.href='{{contextPath}}{{cancelUrl}}'"-->
+<!--                        type="button">{{buttonCancel}}</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </form>-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>Sign In</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/sign.css">
+</head>
+
+<body>
+<div class="container">
+
+    <div class="left-panel">
+        <div class="intro-box">
+            <div class="intro">
+                <h2>Let's Kick Now!</h2>
+                <p>It's Easy and takes less than 30 seconds.</p>
+            </div>
+        </div>
+        <a href="/" class="btn-back">
+            <i class="fas fa-angle-left"></i> HOME
+        </a>
+    </div>
+
+
+    <div class="right-panel">
+        <div class="form-box">
+            <h2>SIGN IN</h2>
+            <form action="/login" method="post">
+
+                {{#globalErrorMessage}}
+                    <div class="field-error" style="margin-bottom: 10px; text-align: center;">
+                        {{globalErrorMessage}}
+                    </div>
+                {{/globalErrorMessage}}
+
+                <div class="form-field">
+                    <input type="text" name="loginId" placeholder="ID"
+                           onfocus="this.placeholder=''" onblur="this.placeholder='ID'">
+                    {{#loginIdError}}
+                        <div class="field-error">{{loginIdError}}</div>
+                    {{/loginIdError}}
+                </div>
+
+                <div class="form-field">
+                    <input type="password" name="password" placeholder="Password"
+                           onfocus="this.placeholder=''" onblur="this.placeholder='Password'">
+                    {{#passwordError}}
+                        <div class="field-error">{{passwordError}}</div>
+                    {{/passwordError}}
+                </div>
+
+                <button type="submit" class="btn-sign">Sign In</button>
+                <p>Haven't an account? <a href="http://localhost:8080/members/add">Sign Up</a></p>
+            </form>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

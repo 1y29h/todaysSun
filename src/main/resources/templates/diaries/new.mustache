@@ -1,0 +1,115 @@
+{{>layouts/header}}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/picmo.min.css">
+<script src="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/umd/index.js"></script>
+
+{{#errorMessage}}
+    <div class="field-error mb-3 text-center">{{errorMessage}}</div>
+{{/errorMessage}}
+
+<div id="emojiModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  z-index: 9999; background: white; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  padding: 10px;">
+    <button id="closeEmojiModal" style="float: right; border: none; background: none; font-size: 1.2rem; cursor: pointer;">✖️</button>
+    <div id="emojiPickerContainer"></div>
+</div>
+
+<div id="emojiOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.3); z-index: 9998;"></div>
+
+<form id="diaryForm" method="post">
+    <div class="container mb-4">
+        <label>Title</label>
+        <input type="text" name="title" class="form-control" required value="{{diary.title}}">
+
+        <label class="mt-3">Date</label>
+        <input type="date" name="date" id="dateInput" class="form-control" required value="{{diary.date}}">
+
+        <label class="mt-3">Recommand</label>
+        <div class="alert alert-info">{{randomQuote}}</div>
+
+        <label class="mt-3">이모지 선택</label>
+        <div class="input-group mb-3">
+            <input type="text" id="moodInput" name="mood" class="form-control" placeholder="이모지를 선택하세요" readonly required value="{{diary.mood}}">
+            <button class="btn btn-outline-secondary" type="button" id="emojiTrigger">{{diary.mood}}</button>
+        </div>
+
+        <p class="mt-2">선택한 이모지: <span id="selectedEmoji">{{diary.mood}}</span></p>
+
+        <label class="mt-3">Content</label>
+        <textarea name="content" rows="10" class="form-control" required>{{diary.content}}</textarea>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-success">Save</button>
+            <a href="/diaries" class="btn btn-secondary">List</a>
+        </div>
+    </div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const dateInput = document.getElementById('dateInput');
+        if (!dateInput.value) {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            dateInput.value = `${yyyy}-${mm}-${dd}`;
+        }
+
+        const trigger = document.getElementById('emojiTrigger');
+        const input = document.getElementById('moodInput');
+        const display = document.getElementById('selectedEmoji');
+        const modal = document.getElementById('emojiModal');
+        const overlay = document.getElementById('emojiOverlay');
+        const closeBtn = document.getElementById('closeEmojiModal');
+        const pickerContainer = document.getElementById('emojiPickerContainer');
+
+        const picker = picmo.createPicker({
+            rootElement: pickerContainer,
+            theme: 'auto',
+            emojisPerRow: 9,
+            rows: 6,
+            defaultCategory: 'smileys'
+        });
+
+        picker.addEventListener('emoji:select', (selection) => {
+            input.value = selection.emoji;
+            display.textContent = selection.emoji;
+            trigger.textContent = selection.emoji;
+            closePicker();
+        });
+
+        function openPicker() {
+            modal.style.display = 'block';
+            overlay.style.display = 'block';
+        }
+
+        function closePicker() {
+            modal.style.display = 'none';
+            overlay.style.display = 'none';
+        }
+
+        trigger.addEventListener('click', openPicker);
+        closeBtn.addEventListener('click', closePicker);
+        overlay.addEventListener('click', closePicker);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closePicker();
+
+        });
+
+        document.getElementById('diaryForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const date = document.querySelector('input[name="date"]').value;
+            if (!date) {
+                alert("날짜를 선택해주세요.");
+                return;
+            }
+            const [year, month, day] = date.split('-');
+            this.action = `/diaries/${parseInt(year)}/${parseInt(month)}/${parseInt(day)}`;
+            this.submit();
+        });
+    });
+</script>
+
+{{>layouts/footer}}

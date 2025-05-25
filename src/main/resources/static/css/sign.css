@@ -1,0 +1,155 @@
+@import url("https://fonts.googleapis.com/css?family=Abril+Fatface|Open+Sans:400,700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1&family=Jua&family=Noto+Sans+KR:wght@100..900&family=Syncopate:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+
+body, html {
+    height: 100%;
+}
+
+.container {
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.left-panel {
+    width: 50%;
+    background: #6ea951;
+    color: white;
+    padding: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.intro h2 {
+    font-size: 2.5rem;
+    font-size: 50px;
+    margin-bottom: 10px;
+    color: #fffcbe !important;
+    font-family: 'Jua', sans-serif !important;
+}
+
+.intro p {
+    font-size: 1rem;
+    font-family: 'Open Sans', sans-serif; !important;
+    font-size: 18px;
+}
+
+.btn-back {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+}
+
+.btn-back i {
+    margin-right: 8px;
+}
+
+.right-panel {
+    width: 50%;
+    background: white;
+    background-size: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-radius: 0 20px 20px 0;
+}
+
+.form-box {
+    width: 360px;
+    background: white;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.form-box h2 {
+    text-align: center;
+    font-family: 'Jua', sans-serif !important;
+    font-size: 28px;
+    color: #406b24;
+    position: relative;
+    margin-bottom: 24px;
+}
+
+.form-box h2::after {
+    content: '';
+    width: 60px;
+    height: 3px;
+    background: #6ea951;
+    display: block;
+    margin: 10px auto 0;
+}
+
+.form-field {
+    margin-bottom: 20px;
+}
+
+.form-field input {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-field input:focus {
+    border-bottom: 1px solid #6ea951; /* 포커스 시 밑줄 색상 변경 */
+}
+
+.btn-sign {
+    width: 100%;
+    padding: 12px;
+    background: #6ea951;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 20px;
+}
+
+    .btn-sign:hover {
+    background: #406b24;
+}
+
+.form-box p {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.form-box p a {
+    color: #406b24;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.field-error {
+    color: #f93f4c;
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
+
+.intro-box {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: left;
+}

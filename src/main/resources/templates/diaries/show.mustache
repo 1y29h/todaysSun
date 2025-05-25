@@ -1,0 +1,18 @@
+{{>layouts/header}}
+
+<div class="container mt-4">
+    <h3>{{diary.mood}} {{diary.title}}</h3>
+    <div class="text-muted small">작성자: {{diary.memberName}}</div>
+    <p class="text-muted">{{diary.date}}</p>
+    <hr>
+    <p>{{diary.content}}</p>
+
+    {{#diary.isOwner}}
+        <a href="/diaries/{{diary.id}}/edit" class="btn btn-warning">✏️ 수정</a>
+        <a href="/diaries/{{diary.id}}/delete" class="btn btn-danger">🗑 삭제</a>
+    {{/diary.isOwner}}
+
+    <a href="/diaries/list" class="btn btn-secondary mt-3">🔙 목록으로</a>
+</div>
+
+{{>layouts/footer}}

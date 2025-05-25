@@ -1,0 +1,23 @@
+{{>layouts/header}}
+
+<div class="container mt-4">
+    <h2>📅 모아해</h2>
+    <div class="row">
+        {{#years}}
+            <div class="col-md-3 mb-4">
+                <div class="card p-3">
+                    <h5>{{year}}년</h5>
+                    <div class="d-flex flex-wrap">
+                        {{#months}}
+                            <a href="/diaries/{{year}}/{{month}}" class="btn btn-outline-primary m-1">{{month}}월</a>
+                        {{/months}}
+                    </div>
+                </div>
+            </div>
+        {{/years}}
+    </div>
+
+    <a href="/diaries/new" class="btn btn-success mt-3">☀️ 오늘해쓰기</a>
+</div>
+
+{{>layouts/footer}}

@@ -1,0 +1,24 @@
+{{>layouts/header}}
+
+<div class="container mt-4">
+    <h2>{{year}}년 {{month}}월</h2>
+    <div class="row row-cols-7 text-center mt-4">
+        {{#days}}
+            <div class="col border p-3">
+                <a href="/diaries/{{year}}/{{month}}/{{day}}" class="text-decoration-none">
+                    {{day}}
+                    {{#emojiList}}
+                        <br><span style="font-size: 20px;">{{.}}</span>
+                    {{/emojiList}}
+                </a>
+            </div>
+        {{/days}}
+    </div>
+
+    <div class="mt-4 d-flex gap-2">
+        <a href="/diaries/new" class="btn btn-primary">오늘해 쓰기 ✍️</a>
+        <a href="/diaries/list" class="btn btn-secondary">🔙 목록으로</a>
+    </div>
+</div>
+
+{{>layouts/footer}}

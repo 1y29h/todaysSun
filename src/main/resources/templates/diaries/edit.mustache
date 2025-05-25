@@ -1,0 +1,120 @@
+{{>layouts/header}}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/picmo.min.css">
+<script src="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/umd/index.js"></script>
+
+<div id="emojiModal" style="
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  padding: 10px;
+">
+    <button id="closeEmojiModal" style="
+    float: right;
+    border: none;
+    background: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+  ">✖️</button>
+    <div id="emojiPickerContainer"></div>
+</div>
+
+<!-- 반투명 배경 오버레이 -->
+<div id="emojiOverlay" style="
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 9998;
+"></div>
+
+<form id="diaryForm" method="post" action="/diaries/{{year}}/{{month}}/{{day}}/update">
+    <div class="container mb-4">
+        <input type="hidden" name="id" value="{{diary.id}}">
+
+        <label>Title</label>
+        <input type="text" name="title" class="form-control" value="{{diary.title}}" required>
+
+        <label class="mt-3">Date</label>
+        <input type="date" name="date" class="form-control" value="{{diary.date}}" required>
+
+        <label class="mt-3">이모지 선택</label>
+        <div class="input-group mb-3">
+            <input type="text" id="moodInput" name="mood" class="form-control" placeholder="이모지를 선택하세요" readonly required value="{{diary.mood}}">
+            <button class="btn btn-outline-secondary" type="button" id="emojiTrigger">{{diary.mood}}</button>
+        </div>
+
+        <p class="mt-2">선택한 이모지: <span id="selectedEmoji">{{diary.mood}}</span></p>
+
+        <label class="mt-3">Content</label>
+        <textarea name="content" rows="10" class="form-control" required>{{diary.content}}</textarea>
+
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">수정</button>
+            <a href="/diaries/{{year}}/{{month}}/{{day}}" class="btn btn-secondary">Back</a>
+        </div>
+    </div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const trigger = document.getElementById('emojiTrigger');
+        const input = document.getElementById('moodInput');
+        const display = document.getElementById('selectedEmoji');
+        const modal = document.getElementById('emojiModal');
+        const pickerContainer = document.getElementById('emojiPickerContainer');
+        const closeBtn = document.getElementById('closeEmojiModal');
+
+        const picker = picmo.createPicker({
+            rootElement: pickerContainer,
+            customElement: false,
+            theme: 'auto',
+            emojisPerRow: 9,
+            rows: 6,
+            defaultCategory: 'smileys'
+        });
+
+        // ✅ 수정: diary.mood 값으로 초기화
+        const initialEmoji = input.value;
+        display.textContent = initialEmoji;
+        trigger.textContent = initialEmoji;
+
+        picker.addEventListener('emoji:select', (selection) => {
+            input.value = selection.emoji;
+            display.textContent = selection.emoji;
+            trigger.textContent = selection.emoji;
+            closePicker();
+        });
+
+        function openPicker() {
+            modal.style.display = 'block';
+            document.getElementById('emojiOverlay').style.display = 'block';
+        }
+
+        function closePicker() {
+            modal.style.display = 'none';
+            document.getElementById('emojiOverlay').style.display = 'none';
+        }
+
+        trigger.addEventListener('click', openPicker);
+        closeBtn.addEventListener('click', closePicker);
+        document.getElementById('emojiOverlay').addEventListener('click', closePicker);
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                closePicker();
+            }
+        });
+    });
+</script>
+
+{{>layouts/footer}}
