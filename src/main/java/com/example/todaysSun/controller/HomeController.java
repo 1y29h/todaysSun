@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 import java.util.Locale;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -58,15 +59,17 @@ public class HomeController {
         }
 
         // 로그인 ID로 사용자 찾기
-        Member loginMember = memberRepository.findById(memberId);
-        log.info("Found member: {}", loginMember);
-
-        if (loginMember == null) {
+        Optional<Member> optionalMember = memberRepository.findById(memberId);
+        if (optionalMember.isEmpty()) {
             log.warn("Member not found for id: {}, redirecting to home", memberId);
             return "redirect:/";
         }
 
+        Member loginMember = optionalMember.get();
+        log.info("Found member: {}", loginMember);
+
         return "redirect:/diaries/list";
     }
+
 
 }

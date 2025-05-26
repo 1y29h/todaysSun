@@ -93,8 +93,6 @@ public class DiaryController {
 
     }
 
-
-    // 월별 보기
     // 월별 보기
     @GetMapping("/diaries/{year}/{month}")
     public String viewMonth(@PathVariable int year, @PathVariable int month, Model model) {
@@ -102,22 +100,28 @@ public class DiaryController {
         LocalDate end = start.withDayOfMonth(start.lengthOfMonth());
         List<Diary> diaries = diaryRepository.findByDateBetween(start, end);
 
-        // 같은 날짜의 이모지를 모두 리스트로 수집
-        Map<Integer, List<String>> emojiMap = new HashMap<>();
+        // 날짜별 일기들(id + mood)
+        Map<Integer, List<Map<String, Object>>> diaryMap = new HashMap<>();
+
         for (Diary d : diaries) {
             int day = d.getDate().getDayOfMonth();
-            emojiMap.computeIfAbsent(day, k -> new ArrayList<>()).add(d.getMood());
+            diaryMap.computeIfAbsent(day, k -> new ArrayList<>()).add(
+                    Map.of("id", d.getId(), "mood", d.getMood())
+            );
         }
 
-        // day 정보를 모아서 Mustache로 전달
         List<Map<String, Object>> days = new ArrayList<>();
         for (int i = 1; i <= start.lengthOfMonth(); i++) {
             Map<String, Object> dayMap = new HashMap<>();
             dayMap.put("day", i);
             dayMap.put("date", LocalDate.of(year, month, i));
-            if (emojiMap.containsKey(i)) {
-                dayMap.put("emojiList", emojiMap.get(i));
+            dayMap.put("year", year); // 템플릿에서 안전하게 사용하기 위해 추가
+            dayMap.put("month", month);
+
+            if (diaryMap.containsKey(i)) {
+                dayMap.put("diaries", diaryMap.get(i));  // List of {id, mood}
             }
+
             days.add(dayMap);
         }
 
@@ -126,14 +130,12 @@ public class DiaryController {
         model.addAttribute("days", days);
 
         LocalDate today = LocalDate.now();
-        if (today.getYear() == year && today.getMonthValue() == month) {
-            model.addAttribute("todayDay", today.getDayOfMonth());
-        } else {
-            model.addAttribute("todayDay", 1);
-        }
+        model.addAttribute("todayDay", (today.getYear() == year && today.getMonthValue() == month) ? today.getDayOfMonth() : 1);
 
         return "diaries/calendar";
     }
+
+
 
     // 날짜 기반 일기 조회
     @GetMapping("/diaries/{year}/{month}/{day}")
