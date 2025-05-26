@@ -1,15 +1,25 @@
-{{>layouts/header}}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>모아해</title>
+    <link rel="stylesheet" href="/css/gather.css">
+</head>
+<body>
 
-<div class="container mt-4">
-    <h2>📅 모아해</h2>
-    <div class="row">
+<div class="container py-5">
+    <div class="gather-title-wrapper">
+        <h2 class="gather-title">🗓️ 모아해</h2>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 g-4 justify-content-center">
         {{#years}}
-            <div class="col-md-3 mb-4">
-                <div class="card p-3">
-                    <h5>{{year}}년</h5>
-                    <div class="d-flex flex-wrap">
+            <div class="col">
+                <div class="year-box text-center">
+                    <div class="year-label">{{year}}년</div>
+                    <div class="month-grid">
                         {{#months}}
-                            <a href="/diaries/{{year}}/{{month}}" class="btn btn-outline-primary m-1">{{month}}월</a>
+                            <a href="/diaries/{{year}}/{{month}}" class="month-button">{{month}}월</a>
                         {{/months}}
                     </div>
                 </div>
@@ -17,7 +27,11 @@
         {{/years}}
     </div>
 
-    <a href="/diaries/new" class="btn btn-success mt-3">☀️ 오늘해쓰기</a>
+    <div class="button-group">
+        <a href="/diaries/new" class="btn btn-today">☀️ 오늘해쓰기</a>
+        <a href="/diaries/list" class="btn btn-back">🔙 목록으로</a>
+    </div>
 </div>
 
-{{>layouts/footer}}
+</body>
+</html>

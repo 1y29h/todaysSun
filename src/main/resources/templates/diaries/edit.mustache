@@ -1,67 +1,54 @@
-{{>layouts/header}}
-
+<link rel="stylesheet" href="/css/new.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/picmo.min.css">
 <script src="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/umd/index.js"></script>
 
-<div id="emojiModal" style="
-  display: none;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  background: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  padding: 10px;
-">
-    <button id="closeEmojiModal" style="
-    float: right;
-    border: none;
-    background: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-  ">✖️</button>
+<!-- 이모지 모달 -->
+<div id="emojiModal">
+    <button id="closeEmojiModal">✖️</button>
     <div id="emojiPickerContainer"></div>
 </div>
-
-<!-- 반투명 배경 오버레이 -->
-<div id="emojiOverlay" style="
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.3);
-  z-index: 9998;
-"></div>
+<div id="emojiOverlay"></div>
 
 <form id="diaryForm" method="post" action="/diaries/{{year}}/{{month}}/{{day}}/update">
-    <div class="container mb-4">
+    <div class="form-wrapper">
         <input type="hidden" name="id" value="{{diary.id}}">
 
-        <label>Title</label>
-        <input type="text" name="title" class="form-control" value="{{diary.title}}" required>
-
-        <label class="mt-3">Date</label>
-        <input type="date" name="date" class="form-control" value="{{diary.date}}" required>
-
-        <label class="mt-3">이모지 선택</label>
-        <div class="input-group mb-3">
-            <input type="text" id="moodInput" name="mood" class="form-control" placeholder="이모지를 선택하세요" readonly required value="{{diary.mood}}">
-            <button class="btn btn-outline-secondary" type="button" id="emojiTrigger">{{diary.mood}}</button>
+        <!-- Title -->
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" class="form-control" placeholder="오늘 어떤 하루를 보내셨나요?" value="{{diary.title}}" required>
         </div>
 
-        <p class="mt-2">선택한 이모지: <span id="selectedEmoji">{{diary.mood}}</span></p>
+        <!-- Date -->
+        <div class="form-group">
+            <label for="dateInput">Date</label>
+            <input type="date" id="dateInput" name="date" class="form-control" value="{{diary.date}}" required>
+        </div>
 
-        <label class="mt-3">Content</label>
-        <textarea name="content" rows="10" class="form-control" required>{{diary.content}}</textarea>
+        <!-- Emoji -->
+        <div class="form-group emoji-group">
+            <div class="emoji-label-row">
+                <div class="left-label">이모지 선택</div>
+            </div>
 
+            <div class="emoji-input-row">
+                <input type="hidden" id="moodInput" name="mood" value="{{diary.mood}}">
+                <button class="btn btn-outline-secondary emoji-button" type="button" id="emojiTrigger">
+                    {{diary.mood}}
+                </button>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea id="content" name="content" class="form-control" placeholder="오늘 있었던 일을 적어보세요 :)" required>{{diary.content}}</textarea>
+        </div>
+
+        <!-- Buttons -->
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary">수정</button>
-            <a href="/diaries/{{year}}/{{month}}/{{day}}" class="btn btn-secondary">Back</a>
+            <button type="submit" class="btn btn-today">📥 저장해</button>
+            <a href="/diaries/{{year}}/{{month}}/{{day}}" class="btn btn-gather">🔙 목록으로</a>
         </div>
     </div>
 </form>
@@ -70,51 +57,40 @@
     document.addEventListener('DOMContentLoaded', function () {
         const trigger = document.getElementById('emojiTrigger');
         const input = document.getElementById('moodInput');
-        const display = document.getElementById('selectedEmoji');
         const modal = document.getElementById('emojiModal');
-        const pickerContainer = document.getElementById('emojiPickerContainer');
+        const overlay = document.getElementById('emojiOverlay');
         const closeBtn = document.getElementById('closeEmojiModal');
+        const pickerContainer = document.getElementById('emojiPickerContainer');
 
         const picker = picmo.createPicker({
             rootElement: pickerContainer,
-            customElement: false,
             theme: 'auto',
             emojisPerRow: 9,
             rows: 6,
             defaultCategory: 'smileys'
         });
 
-        // ✅ 수정: diary.mood 값으로 초기화
-        const initialEmoji = input.value;
-        display.textContent = initialEmoji;
-        trigger.textContent = initialEmoji;
-
         picker.addEventListener('emoji:select', (selection) => {
             input.value = selection.emoji;
-            display.textContent = selection.emoji;
             trigger.textContent = selection.emoji;
             closePicker();
         });
 
         function openPicker() {
             modal.style.display = 'block';
-            document.getElementById('emojiOverlay').style.display = 'block';
+            overlay.style.display = 'block';
         }
 
         function closePicker() {
             modal.style.display = 'none';
-            document.getElementById('emojiOverlay').style.display = 'none';
+            overlay.style.display = 'none';
         }
 
         trigger.addEventListener('click', openPicker);
         closeBtn.addEventListener('click', closePicker);
-        document.getElementById('emojiOverlay').addEventListener('click', closePicker);
+        overlay.addEventListener('click', closePicker);
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                closePicker();
-            }
+            if (e.key === 'Escape') closePicker();
         });
     });
 </script>
-
-{{>layouts/footer}}

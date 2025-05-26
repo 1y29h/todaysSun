@@ -11,10 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
@@ -86,6 +85,9 @@ public class DiaryController {
         model.addAttribute("year", date.getYear());
         model.addAttribute("month", date.getMonthValue());
         model.addAttribute("diary", map);
+
+        boolean isAuthor = loginId != null && loginId.equals(diary.getAuthor());
+        model.addAttribute("isAuthor", isAuthor);
 
         return "diaries/view";
 
@@ -222,7 +224,32 @@ public class DiaryController {
                 "고개 숙이지 마십시오. 세상을 똑바로 정면으로 바라보십시오. -헬렌 켈러-",
                 "고난의 시기에 동요하지 않는 것, 이것은 진정 칭찬받을 만한 뛰어난 인물의 증거다. -베토벤-",
                 "당신이 할 수 있다고 믿든 할 수 없다고 믿든, 믿는 대로 될 것이다. -헨리 포드-",
-                "작은 기회로부터 종종 위대한 업적이 시작된다. -데모스테네스-"
+                "작은 기회로부터 종종 위대한 업적이 시작된다. -데모스테네스-",
+                "내가 꾸준히 실천하고 있는 행복한 습관은 무엇인가요?",
+                "오늘 내가 당당하게 마주한 일은 어떤 것이었나요?",
+                "최근 힘들었던 순간 속에서 내가 지켜낸 나만의 원칙은 무엇인가요?",
+                "지금 내가 믿고 싶은 나의 가능성은 어떤 모습인가요?",
+                "작지만 내 인생에 영향을 준 기회가 있었나요?",
+                "성공은 최선을 다한 결과일 뿐, 결코 우연이 아니다. -콜린 파월-",
+                "오늘 내가 최선을 다한 일은 무엇이었나요?",
+                "자신을 이기는 것이 가장 위대한 승리다. -플라톤-",
+                "오늘 나 자신과 싸워 이긴 순간은 언제였나요?",
+                "실패는 성공으로 가는 또 다른 기회다. -헨리 포드-",
+                "최근의 실패로부터 내가 배운 점은 무엇인가요?",
+                "가장 어두운 밤도 끝나고 해는 뜬다. -빅터 위고-",
+                "요즘 내가 희망을 느끼게 된 계기는 무엇이었나요?",
+                "사람은 행복하기로 마음먹은 만큼 행복하다. -에이브러햄 링컨-",
+                "행복을 선택하기 위해 오늘 내가 한 작은 선택은 무엇인가요?",
+                "천 마디 말보다 하나의 행동이 더 낫다. -벤저민 프랭클린-",
+                "오늘 내가 실천한 의미 있는 행동은 무엇이었나요?",
+                "성장은 불편함 속에서 일어난다. -로이 베넷-",
+                "최근 나를 불편하게 했지만 성장하게 만든 경험은?",
+                "진짜 용기는 두려움 속에서도 행동하는 것이다. -마크 트웨인-",
+                "두려움을 안고도 내가 시도한 일이 있었나요?",
+                "시간은 우리가 가진 가장 공평한 자산이다. -짐 론-",
+                "오늘 하루를 내가 가장 가치 있게 쓴 순간은?",
+                "남과 비교하지 말고 어제의 나와 비교하라. -익명-",
+                "어제보다 더 나아진 나의 모습은 무엇인가요?"
         );
         model.addAttribute("randomQuote", quotes.get(new Random().nextInt(quotes.size())));
 
@@ -232,13 +259,37 @@ public class DiaryController {
         return "diaries/new";
     }
 
-    // 작성 처리
     @PostMapping("/diaries/{year}/{month}/{day}")
     public String createByDate(@PathVariable int year,
                                @PathVariable int month,
                                @PathVariable int day,
-                               DiaryForm form,
-                               HttpSession session) {
+                               @Valid @ModelAttribute("diary") DiaryForm form,
+                               BindingResult bindingResult,
+                               HttpSession session,
+                               Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("year", year);
+            model.addAttribute("month", month);
+            model.addAttribute("day", day);
+            model.addAttribute("randomQuote", "오늘도 좋은 하루 보내세요 :)");
+
+            if (bindingResult.hasFieldErrors("title")) {
+                model.addAttribute("titleError", bindingResult.getFieldError("title").getDefaultMessage());
+            }
+            if (bindingResult.hasFieldErrors("date")) {
+                model.addAttribute("dateError", bindingResult.getFieldError("date").getDefaultMessage());
+            }
+            if (bindingResult.hasFieldErrors("mood")) {
+                model.addAttribute("moodError", bindingResult.getFieldError("mood").getDefaultMessage());
+            }
+            if (bindingResult.hasFieldErrors("content")) {
+                model.addAttribute("contentError", bindingResult.getFieldError("content").getDefaultMessage());
+            }
+
+            return "diaries/new";
+        }
+
         String loginId = (String) session.getAttribute("loginId");
         Diary diary = new Diary(
                 null,
@@ -249,7 +300,7 @@ public class DiaryController {
                 loginId
         );
         Diary saved = diaryRepository.save(diary);
-        return "redirect:/diaries/view/" + saved.getId(); // ✅ 특정 일기 보기로 리디렉션
+        return "redirect:/diaries/view/" + saved.getId();
     }
 
     // 수정 폼

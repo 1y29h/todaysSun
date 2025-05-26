@@ -58,8 +58,6 @@ public class MemberController {
         return "members/addMemberForm"; // <- 파일 경로와 일치시켜
     }
 
-
-
     @PostMapping("/add")
     public String save(@Valid @ModelAttribute("member") Member member,
                        BindingResult bindingResult,

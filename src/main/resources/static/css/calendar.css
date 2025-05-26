@@ -1,0 +1,135 @@
+@import url("https://fonts.googleapis.com/css?family=Abril+Fatface|Open+Sans:400,700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1&family=Jua&family=Noto+Sans+KR:wght@100..900&family=Syncopate:wght@400;700&display=swap');
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 0;
+}
+
+.calendar-title {
+    font-family: 'Jua', sans-serif;
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 20px;
+}
+
+.calendar-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: #6ea951;
+    border-radius: 20px;
+    padding: 30px 20px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+    text-align: center;
+}
+
+.weekday-row div {
+    color: #fffaf0;
+    font-weight: bold;
+    background-color: transparent;
+}
+
+.calendar-cell {
+    padding: 14px 0;
+    background-color: #fffaf0;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    min-height: 60px;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.calendar-cell a {
+    text-decoration: none;
+    color: #333;
+}
+
+.calendar-cell span {
+    font-size: 20px;
+    display: block;
+    margin-top: 4px;
+}
+
+.today-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn-success {
+    background-color: #488E72;
+    border: none;
+    color: white;
+    padding: 10px 24px;
+    font-weight: bold;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 1rem;
+}
+
+.btn-success:hover {
+    background-color: #3a745c;
+}
+
+.btn-today {
+    background-color: #6ea951;
+    color: white;
+}
+
+.btn-today:hover {
+    background-color: #406b24;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: bold;
+}
+
+/* ✅ 홈 버튼 디자인 동일 적용 */
+.btn-today {
+    background-color: #6ea951;
+    color: white;
+}
+
+.btn-today:hover {
+    background-color: #406b24;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 30px;
+}
+
+.btn-today {
+    background-color: #6ea951;
+    color: white;
+}
+
+.btn-back {
+    background-color: #EBDB94;
+    color: #333;
+}

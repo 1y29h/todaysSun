@@ -1,32 +1,41 @@
-{{>layouts/header}}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>오늘해</title>
+    <link rel="stylesheet" href="/css/index.css">
+</head>
+<body>
 
-<div class="container mt-4">
-    <h2>🌞 오늘해</h2>
-    <ul class="list-group">
-        {{#diaryList}}
-            <li class="list-group-item">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <span class="me-2" style="font-size: 24px;">{{mood}}</span>
-                        <a href="/diaries/view/{{id}}" class="fw-bold">{{title}}</a>
-                    </div>
-                    <div class="text-end small text-muted">
-                        🗓 {{date}}<br>
-                        ✍️ {{memberName}}
-                    </div>
-                </div>
-            </li>
-        {{/diaryList}}
-    </ul>
-
-    <div class="mt-3 d-flex gap-2">
-        <a href="/diaries/new" class="btn btn-success">☀️ 오늘해쓰기</a>
-        <a href="/gather" class="btn btn-outline-primary">📅 모아해</a>
-        <form action="/logout" method="post">
-            <button type="submit" class="btn btn-outline-danger">🔓 로그아웃</button>
-        </form>
+<div class="wrapper">
+    <div class="title">
+        <span>☀️ 오늘해 ☀️</span>
     </div>
 
+    <div class="diary-box">
+        {{#diaryList}}
+            <div class="diary-card">
+                <div class="diary-left">
+                    <span style="font-size: 20px;">{{mood}}</span>
+                    <a href="/diaries/view/{{id}}">{{title}}</a>  <!-- ✅ 이 부분 수정 -->
+                </div>
+
+                <div class="diary-meta">
+                    🗓 {{date}}<br>
+                    ✍️ {{memberName}}
+                </div>
+            </div>
+        {{/diaryList}}
+    </div>
+
+    <div class="button-group">
+        <a href="/diaries/new" class="btn btn-today">☀️ 오늘해쓰기</a>
+        <a href="/gather" class="btn btn-gather">📅 모아해</a>
+        <form action="/logout" method="post">
+            <button type="submit" class="btn btn-logout">🔓 로그아웃</button>
+        </form>
+    </div>
 </div>
 
-{{>layouts/footer}}
+</body>
+</html>

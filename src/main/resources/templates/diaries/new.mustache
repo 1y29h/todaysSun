@@ -1,50 +1,85 @@
-{{>layouts/header}}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>오늘해 쓰기</title>
+    <link rel="stylesheet" href="/css/new.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/picmo.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/umd/index.js"></script>
+</head>
 
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/picmo.min.css">
-<script src="https://cdn.jsdelivr.net/npm/picmo@5.8.5/dist/umd/index.js"></script>
+<body>
 
 {{#errorMessage}}
     <div class="field-error mb-3 text-center">{{errorMessage}}</div>
 {{/errorMessage}}
 
-<div id="emojiModal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  z-index: 9999; background: white; border: 1px solid #ccc; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  padding: 10px;">
-    <button id="closeEmojiModal" style="float: right; border: none; background: none; font-size: 1.2rem; cursor: pointer;">✖️</button>
+<div id="emojiModal">
+    <button id="closeEmojiModal">✖️</button>
     <div id="emojiPickerContainer"></div>
 </div>
+<div id="emojiOverlay"></div>
 
-<div id="emojiOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-  background: rgba(0, 0, 0, 0.3); z-index: 9998;"></div>
 
 <form id="diaryForm" method="post">
-    <div class="container mb-4">
-        <label>Title</label>
-        <input type="text" name="title" class="form-control" required value="{{diary.title}}">
+    <div class="form-wrapper">
 
-        <label class="mt-3">Date</label>
-        <input type="date" name="date" id="dateInput" class="form-control" required value="{{diary.date}}">
-
-        <label class="mt-3">Recommand</label>
-        <div class="alert alert-info">{{randomQuote}}</div>
-
-        <label class="mt-3">이모지 선택</label>
-        <div class="input-group mb-3">
-            <input type="text" id="moodInput" name="mood" class="form-control" placeholder="이모지를 선택하세요" readonly required value="{{diary.mood}}">
-            <button class="btn btn-outline-secondary" type="button" id="emojiTrigger">{{diary.mood}}</button>
+        <div class="form-group">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" class="form-control" placeholder="오늘 어떤 하루를 보내셨나요?" value="{{diary.title}}">
+            {{#titleError}}<div class="field-error">{{titleError}}</div>{{/titleError}}
         </div>
 
-        <p class="mt-2">선택한 이모지: <span id="selectedEmoji">{{diary.mood}}</span></p>
+        <div class="form-group">
+            <label for="dateInput">Date</label>
+            <input type="date" id="dateInput" name="date" class="form-control" value="{{diary.date}}">
+        </div>
 
-        <label class="mt-3">Content</label>
-        <textarea name="content" rows="10" class="form-control" required>{{diary.content}}</textarea>
+        <!-- Recommend -->
+        <div class="form-group">
+            <label>Recommand</label>
+            <div class="alert alert-info">{{randomQuote}}</div>
+        </div>
 
+        <!-- Emoji -->
+        <div class="form-group emoji-group">
+            <div class="emoji-label-row">
+                <div class="left-label">이모지 선택</div>
+            </div>
+
+            <div class="emoji-input-row">
+                <!-- 숨겨진 실제 입력값 -->
+                <input type="hidden" id="moodInput" name="mood" value="{{diary.mood}}">
+
+                <!-- 사용자에게 보여지는 버튼만 -->
+                <button class="btn btn-outline-secondary emoji-button" type="button" id="emojiTrigger">
+                    {{diary.mood}}
+                </button>
+            </div>
+
+            {{#moodError}}<div class="field-error">{{moodError}}</div>{{/moodError}}
+        </div>
+
+
+        {{#moodError}}<div class="field-error">{{moodError}}</div>{{/moodError}}
+
+        <!-- Content -->
+        <div class="form-group">
+            <label for="content">Content</label>
+            <textarea id="content" name="content" class="form-control" placeholder="오늘 있었던 일을 적어보세요 :)">{{diary.content}}</textarea>
+            {{#contentError}}<div class="field-error">{{contentError}}</div>{{/contentError}}
+        </div>
+
+
+        <!-- Buttons -->
         <div class="mt-4">
-            <button type="submit" class="btn btn-success">Save</button>
-            <a href="/diaries" class="btn btn-secondary">List</a>
+            <button type="submit" class="btn btn-today">📥 저장해</button>
+            <a href="/diaries" class="btn btn-gather">🔙 목록으로</a>
         </div>
     </div>
 </form>
+
+
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -59,7 +94,6 @@
 
         const trigger = document.getElementById('emojiTrigger');
         const input = document.getElementById('moodInput');
-        const display = document.getElementById('selectedEmoji');
         const modal = document.getElementById('emojiModal');
         const overlay = document.getElementById('emojiOverlay');
         const closeBtn = document.getElementById('closeEmojiModal');
@@ -75,9 +109,8 @@
 
         picker.addEventListener('emoji:select', (selection) => {
             input.value = selection.emoji;
-            display.textContent = selection.emoji;
-            trigger.textContent = selection.emoji;
-            closePicker();
+            trigger.textContent = selection.emoji;  // 즉시 반영
+            closePicker();  // 선택 시 모달 닫기
         });
 
         function openPicker() {
@@ -95,12 +128,11 @@
         overlay.addEventListener('click', closePicker);
         document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') closePicker();
-
         });
 
         document.getElementById('diaryForm').addEventListener('submit', function (e) {
             e.preventDefault();
-            const date = document.querySelector('input[name="date"]').value;
+            const date = dateInput.value;
             if (!date) {
                 alert("날짜를 선택해주세요.");
                 return;
@@ -110,6 +142,8 @@
             this.submit();
         });
     });
+
 </script>
 
-{{>layouts/footer}}
+</body>
+</html>

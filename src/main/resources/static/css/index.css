@@ -1,0 +1,125 @@
+@import url("https://fonts.googleapis.com/css?family=Abril+Fatface|Open+Sans:400,700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1&family=Jua&family=Noto+Sans+KR:wght@100..900&family=Syncopate:wght@400;700&display=swap');
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 60px;
+}
+
+.title {
+    font-size: 2rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.title span {
+    color: #1f1f1f;
+    font-size: 40px;
+    font-family: 'Jua', sans-serif !important;
+    font-weight: bold;
+}
+
+.diary-box {
+    background-color: #6ea951;
+    padding: 30px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 700px;
+    margin-bottom: 30px;
+}
+
+.diary-card {
+    background-color: #fffaf0;
+    border-radius: 10px;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    border: none;
+}
+
+.diary-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.diary-card a {
+    color: #406b24;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.diary-card a:hover {
+    text-decoration: underline;
+}
+
+.diary-meta {
+    font-size: 0.8rem;
+    color: #666;
+    text-align: right;
+}
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.button-group .btn {
+    font-family: 'Noto Sans KR', sans-serif !important;
+    font-weight: bold;
+}
+
+
+.btn-today {
+    background-color: #6ea951;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+.btn-today:hover {
+    background-color: #406b24;
+}
+
+.btn-gather {
+    background-color: #EBDB94;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    text-decoration: none;
+}
+
+.btn-gather:hover {
+    background-color: #ddcd84;
+}
+
+.btn-logout {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: none;
+    padding: 10px 20px;
+}
+
+.btn-logout:hover {
+    background-color: #f1c0c4;
+}

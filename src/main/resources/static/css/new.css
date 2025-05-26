@@ -1,0 +1,361 @@
+@import url("https://fonts.googleapis.com/css?family=Abril+Fatface|Open+Sans:400,700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1&family=Jua&family=Noto+Sans+KR:wght@100..900&family=Syncopate:wght@400;700&display=swap');
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background-color: #fff;
+    padding: 20px;
+    margin: 0;
+}
+
+label {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+    display: block;
+}
+
+.form-control {
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 1.1rem;
+    color: #333;
+    background-color: #fffaf0;
+    border: 2px solid #6ea951;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 5px;
+}
+
+/* Title 전용 */
+input[type="text"].form-control {
+    font-family: 'Noto Sans KR', sans-serif; /* 명시적으로 써줌 */
+    font-size: 1.1rem; /* 다른 input과 같게 */
+    font-weight: normal; /* bold 빼고 normal로 맞춤 */
+    height: 40px;
+    padding: 10px;
+    color: #333;
+}
+
+/* Date 전용 */
+input[type="date"].form-control {
+    height: 40px;
+}
+
+/* Content 전용 */
+textarea.form-control {
+    min-height: 160px;
+    resize: vertical;
+}
+
+.form-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+}
+
+.form-group {
+    width: 100%;
+}
+
+input[type="text"],
+input[type="date"] {
+    height: 40px;
+}
+
+textarea {
+    min-height: 160px;
+    resize: vertical;
+    background-color: #fffaf0;
+    font-size: 1.1rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #333;
+    border: 2px solid #6ea951;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+
+
+
+
+
+input[type="text"] {
+    font-weight: bold;
+    font-size: 1.3rem;
+}
+
+textarea.form-control {
+    resize: vertical;
+    font-size: 1.1rem;
+    background-color: #fffaf0;
+}
+
+textarea.form-control::placeholder {
+    color: #bbb;
+}
+
+input::placeholder {
+    color: #bbb;
+}
+
+
+.alert-info {
+    background-color: #6ea951 !important;
+    color: #fffcbe;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.field-error {
+    color: #f93f4c;
+    font-size: 0.85rem;
+    margin-top: 5px;
+}
+
+.form-control.field-error {
+    border-color: #f93f4c;
+    outline: none;
+}
+
+/* 버튼 공통 */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    height: 48px;
+    box-sizing: border-box;
+}
+
+/* 저장 버튼 (오늘해쓰기와 동일한 색) */
+.btn-today {
+    background-color: #6ea951;
+    color: white;
+}
+
+.btn-today:hover {
+    background-color: #406b24;
+}
+
+/* 목록으로 버튼 (모아해 버튼과 동일한 색) */
+.btn-gather {
+    background-color: #EBDB94;
+    color: #333;
+}
+
+.btn-gather:hover {
+    background-color: #ddcd84;
+}
+
+
+.btn-success {
+    background-color: #6ea951;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background-color: #EBDB94;
+    color: #333;
+    border: none;
+    padding: 10px 20px;
+    font-weight: bold;
+    margin-left: 10px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 이모지 선택 영역 */
+.emoji-group {
+    width: 100%;
+}
+
+.emoji-label-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+}
+
+.emoji-label-row .left-label,
+.emoji-label-row .right-label {
+    font-weight: bold;
+    font-size: 1.05rem;
+}
+
+.emoji-input-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.left-group {
+    display: flex;
+    flex: 1;
+    gap: 0.4rem;
+}
+
+.left-group input {
+    flex: 1;
+}
+
+.right-emoji {
+    font-size: 1.6rem;
+    padding-top: 0.1rem;
+    white-space: nowrap;
+}
+
+#emojiModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    padding: 20px;
+    width: fit-content;
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow: auto;
+}
+
+.emoji-button {
+    height: 55px;
+    font-size: 2rem;
+    padding: 0.8rem 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: #fffaf0; /* 녹색 */
+    color: white;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.emoji-button:hover {
+    background-color: #6ea951; /* hover 효과 */
+}
+
+.btn-gather small {
+    font-size: 0.65rem;
+    line-height: 1;
+    display: block;
+    margin: -4px 0 0;
+}
+
+
+/* 저장 버튼 */
+.btn-today {
+    background-color: #6ea951;
+    color: white;
+}
+
+.btn-today:hover {
+    background-color: #406b24;
+}
+
+/* 목록으로 버튼 */
+.btn-gather {
+    background-color: #EBDB94;
+    color: #333;
+}
+
+.btn-gather:hover {
+    background-color: #ddcd84;
+}
+
+#emojiModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    padding: 20px;
+    width: 500px; /* 충분히 넓게 */
+    max-width: 90vw;
+    max-height: 80vh;
+    overflow: auto;
+}
+
+#emojiPickerContainer {
+    width: 100%;
+    height: auto;
+}
+
+.emoji-button {
+    font-size: 2rem;
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    background-color: #fffcbe;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.emoji-button:hover {
+    background-color: #6ea951;
+}
+
+.alert-info {
+    background-color: #6ea951 !important;
+    color: #fffcbe;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #406b24;
+    box-shadow: none;
+}
+
+.emoji-button:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #406b24;
+}
+
+
+#emojiOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0); /* 투명 클릭 영역 */
+    z-index: 9998;
+    display: none;
+}
